@@ -62,7 +62,7 @@ class SplashScreen(QMainWindow):
             self.main.show()
             self.close()
 
-        counter += 1
+        counter += 4
 
 if __name__ == "__main__":
     app = QApplication([])

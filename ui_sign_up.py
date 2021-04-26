@@ -14,10 +14,11 @@ import random
 import smtplib
 import mysql.connector
 from mysql.connector import connection, errorcode
+# from ui_sign_in import Ui_Sign_In_Window
 
-
+flag = True
 # server_password = 'wzgreexzxwzapkcj'
-
+otp = ""
 class Ui_SignUpWindow(object):
     def setupUi(self, SignUpWindow):
         SignUpWindow.setObjectName("SignUpWindow")
@@ -213,6 +214,7 @@ class Ui_SignUpWindow(object):
         self.toggle_sign_up.setStyleSheet("background-color: rgb(178, 85, 245);\n"
 "border-radius:5px;")
         self.toggle_sign_up.setObjectName("toggle_sign_up")
+        self.toggle_sign_up.clicked.connect(self.toggle_signup)
         self.label_16 = QtWidgets.QLabel(self.widget)
         self.label_16.setGeometry(QtCore.QRect(80, 180, 90, 25))
         font = QtGui.QFont()
@@ -260,7 +262,17 @@ class Ui_SignUpWindow(object):
         self.toggle_sign_up.setText(_translate("SignUpWindow", "Student"))
         self.label_16.setText(_translate("SignUpWindow", "Username"))
 
+    def toggle_signup(self):
+        global flag
+        if flag:
+                flag = False
+                self.toggle_sign_up.setText('Teacher')
+        else:
+                flag = True
+                self.toggle_sign_up.setText('Student')
+
     def generatingOTP(self):
+        global otp
         email_id = str(self.email.text())
         # global server_password
         server = smtplib.SMTP('smtp.gmail.com', port=587)
@@ -272,6 +284,8 @@ class Ui_SignUpWindow(object):
         server.quit()
 
     def storeTo_db(self):
+        global otp
+        print(otp)
         try:
                 mydb = connection.MySQLConnection(
         database = 'online_examination_system',
@@ -295,14 +309,18 @@ class Ui_SignUpWindow(object):
         user_confirmed_password = str(self.confirmedPassword.text())
         user_otp = str(self.generatedOTP.text())
 
-        add_student = ("INSERT INTO student_table (username, first_name, last_name, email_id, password) VALUES (%s, %s, %s, %s, %s)")
+        if flag:
+                add_user = ("INSERT INTO student_table (username, first_name, last_name, email_id, password) VALUES (%s, %s, %s, %s, %s)")
+        else:
+                add_user = ("INSERT INTO faculty_table (username, first_name, last_name, email_id, password) VALUES (%s, %s, %s, %s, %s)")
         user_data = (user_name, first_name, last_name, email_id, user_password)
         cursor = mydb.cursor()
-        if user_password == user_confirmed_password:
-                cursor.execute(add_student, user_data)
+        if user_password == user_confirmed_password and user_otp == otp:
+                cursor.execute(add_user, user_data)
                 mydb.commit()
+                
         else:
-                print('Password does not match!!!')
+                print("Password or otp doesn't match!!!")
                 self.error_msg.setText('Password does not match')
                 self.error_msg.setStyleSheet("background-color:rgba(0,0,0,0);\n"
 "border: none;\n"
@@ -310,3 +328,7 @@ class Ui_SignUpWindow(object):
 "")
         cursor.close()
         mydb.close()
+        # self.signinwindow = QtWidgets.QMainWindow()
+        # self.ui = Ui_Sign_In_Window
+        # self.ui.setupUi(self.signinwindow)
+        # self.signinwindow.show()

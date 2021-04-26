@@ -13,6 +13,11 @@ from PyQt5.QtCore import QSize
 from PyQt5.QtWidgets import QMainWindow, QApplication
 from ui_sign_up import Ui_SignUpWindow
 from ui_admin_dashboard import Ui_Admin_dashboard
+from questions import Ui_Questions
+from PyQt5 import QtWidgets, uic
+import mysql.connector
+from mysql.connector import connection, errorcode
+
 flag = True
 
 
@@ -172,8 +177,44 @@ class Ui_Sign_In_Window(object):
         self.signupwindow.show()
 
     def call_dashboard(self):
-        self.dashboard = QtWidgets.QMainWindow() 
-        self.ui = Ui_Admin_dashboard()
-        self.ui.setupUi(self.dashboard)
-        self.dashboard.show()
-        
+        try:
+                mydb = connection.MySQLConnection(
+        database = 'online_examination_system',
+        host = '127.0.0.1',
+        user = "root",
+        password = "HSbF6@123$"
+)
+        except mysql.connector.Error as err:
+                if err.errno == errorcode.ER_ACCESS_DENIED_ERROR:
+                        print("Wrong username or password")
+                if err.errno == errorcode.ER_BAD_DB_ERROR:
+                        print("Database does not exist")
+                else:
+                        print(err)
+        text_username = str(self.userName.text())
+        text_password = str(self.password.text())
+
+        if flag:
+                access_db = ("SELECT username, password FROM student_table")
+        else:
+                access_db = ("SELECT username, password FROM faculty_table")
+        cursor = mydb.cursor()
+        cursor.execute(access_db)
+
+        for x in cursor.fetchall():
+                if x[0] == text_username and x[1] == text_password:
+
+                        # self.dashboard = QtWidgets.QMainWindow() 
+                        # self.ui = Ui_Admin_dashboard()
+                        # self.ui.setupUi(self.dashboard)
+                        # self.dashboard.show()
+
+                        # uic.loadUi('ui_questions.ui', self)
+                        self.quest = QtWidgets.QMainWindow()
+                        self.ui = Ui_Questions()
+                        self.ui.setupUi(self.quest)
+                        self.quest.show()
+                        break
+                else:
+                        print ("Wrong username or password!!!")
+                        break

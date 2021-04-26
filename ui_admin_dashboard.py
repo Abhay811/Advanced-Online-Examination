@@ -13,6 +13,7 @@ from PyQt5.QtWidgets import QWidget, QMainWindow
 from PyQt5 import QtCore, QtGui
 from PyQt5 import QtCore, QtGui, uic
 from PyQt5.QtGui import QColor
+from PyQt5.QtCore import *
 from PyQt5.uic import loadUi
 
 class Ui_Admin_dashboard(object):
@@ -20,7 +21,6 @@ class Ui_Admin_dashboard(object):
         Admin_dashboard.setObjectName("Admin_dashboard")
         Admin_dashboard.resize(1200, 720)
         Admin_dashboard.setWindowFlags(QtCore.Qt.FramelessWindowHint)
-        # Admin_dashboard.setAttribute(QtCore.Qt.WA_TranslucentBackground)
         Admin_dashboard.setMinimumSize(QtCore.QSize(1000, 720))
         palette = QtGui.QPalette()
         brush = QtGui.QBrush(QtGui.QColor(255, 255, 255))
@@ -330,6 +330,7 @@ class Ui_Admin_dashboard(object):
         icon.addPixmap(QtGui.QPixmap(":/16x16/icons/16x16/cil-window-minimize.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.btn_minimize.setIcon(icon)
         self.btn_minimize.setObjectName("btn_minimize")
+        self.btn_minimize.clicked.connect(lambda: Admin_dashboard.showMinimized())
         self.horizontalLayout_5.addWidget(self.btn_minimize)
         self.btn_maximize_restore = QtWidgets.QPushButton(self.frame_btns_right)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
@@ -352,6 +353,7 @@ class Ui_Admin_dashboard(object):
         icon1.addPixmap(QtGui.QPixmap(":/16x16/icons/16x16/cil-window-maximize.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.btn_maximize_restore.setIcon(icon1)
         self.btn_maximize_restore.setObjectName("btn_maximize_restore")
+        self.btn_maximize_restore.clicked.connect(lambda: Admin_dashboard.showMaximized())
         self.horizontalLayout_5.addWidget(self.btn_maximize_restore)
         self.btn_close = QtWidgets.QPushButton(self.frame_btns_right)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
@@ -364,7 +366,7 @@ class Ui_Admin_dashboard(object):
 "    background-color: transparent;\n"
 "}\n"
 "QPushButton:hover {\n"
-"    background-color: rgb(44, 49, 60)\n"
+"    background-color: rgb(255, 21, 10)\n"
 "}\n"
 "QPushButton:pressed {    \n"
 "    background-color: rgb(85, 170, 255);\n"
@@ -374,7 +376,9 @@ class Ui_Admin_dashboard(object):
         icon2.addPixmap(QtGui.QPixmap(":/16x16/icons/16x16/cil-x.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.btn_close.setIcon(icon2)
         self.btn_close.setObjectName("btn_close")
+        self.btn_close.clicked.connect(lambda: Admin_dashboard.close())
         self.horizontalLayout_5.addWidget(self.btn_close)
+        
         self.horizontalLayout_4.addWidget(self.frame_btns_right)
         self.verticalLayout_2.addWidget(self.frame_top_btns)
         self.frame_top_info = QtWidgets.QFrame(self.frame_top_right)
@@ -764,3 +768,8 @@ class Ui_Admin_dashboard(object):
         self.btn_settings.setText(_translate("Admin_dashboard", "Open File"))
         self.label_version.setText(_translate("Admin_dashboard", "v1.0.0"))
 import files_rc
+
+#     def close_application(self):
+#         self.close()
+#     def resize_maximize(self):
+#         Admin_dashboard.showMaximized()
