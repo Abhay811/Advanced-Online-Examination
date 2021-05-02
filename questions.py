@@ -14,11 +14,22 @@ from PyQt5.QtCore import QSize
 import mysql.connector
 from mysql.connector import connection, errorcode
 from PyQt5.QtWidgets import *
+from ui_admin_dashboard import Ui_Admin_dashboard
+DURATION = 10
+
+def sec_to_min(secs: int):
+    mins = secs // 60
+    secs = secs % 60
+    minsec = f'{mins:02}:{secs:02}'
+    return minsec
 
 class Ui_Questions(object):
     def setupUi(self, Questions):
+        
         Questions.setObjectName("Questions")
         Questions.resize(1200, 720)
+        
+        
         self.centralwidget = QtWidgets.QWidget(Questions)
         self.centralwidget.setStyleSheet("background-color: rgb(45, 45, 75);")
         self.centralwidget.setObjectName("centralwidget")
@@ -75,6 +86,23 @@ class Ui_Questions(object):
         self.verticalLayout_2.addWidget(self.scrollArea)
         self.verticalLayout.addWidget(self.frame_3)
         self.horizontalLayout.addWidget(self.frame)
+
+        self.time_left = DURATION
+        self.myTimer = QtCore.QTimer()
+        self.timerLabel = QtWidgets.QLabel(self.frame_2)
+        self.timerLabel.setText("01:00")
+        self.timerLabel.move(1000, 20)
+        font = QtGui.QFont()
+        font.setPointSize(12)
+        font.setBold(True)
+        self.timerLabel.setFont(font)
+        self.timerLabel.setStyleSheet("background-color:rgba(0,0,0,0);\n"
+"border: none;\n"
+"color:rgba(255, 0, 15, 230);\n"
+"")
+        self.myTimer.timeout.connect(self.timerTimeout)
+        self.myTimer.start(1000)
+
         Questions.setCentralWidget(self.centralwidget)
 
         self.retranslateUi(Questions)
@@ -84,6 +112,46 @@ class Ui_Questions(object):
     def retranslateUi(self, Questions):
         _translate = QtCore.QCoreApplication.translate
         Questions.setWindowTitle(_translate("Questions", "MainWindow"))
+
+
+    def timerTimeout(self):
+        self.time_left -=1
+        marks = 0
+        if self.time_left == 0:
+            # print(self.radioButton1.isChecked())
+            # print(str(self.choices[0].text()))
+
+            try:
+                mydb = connection.MySQLConnection(
+                    database = 'online_examination_system',
+                    host = '127.0.0.1',
+                    user = 'root',
+                    password = 'HSbF6@123$'
+                )
+            except mysql.connector.Error as err:
+                print(err)
+            access_correct = ('SELECT option_correct from table_questions')
+            cursor = mydb.cursor()
+            cursor.execute(access_correct)
+            i = 0
+            for x in cursor.fetchall():
+                if str(self.choices[i].text()) == x[0]:
+                    marks += 1
+                i += 1
+            print(marks)
+
+
+            self.time_left = DURATION
+            self.dashboard = QtWidgets.QMainWindow() 
+            self.ui = Ui_Admin_dashboard()
+            self.ui.setupUi(self.dashboard)
+            self.dashboard.show()
+            # self.close()
+        self.update_gui()
+    
+    def update_gui(self):
+        minsec = sec_to_min(self.time_left)
+        self.timerLabel.setText(minsec)
 
     def showQuestions(self):
         try:
@@ -104,6 +172,8 @@ class Ui_Questions(object):
         self.vbox = QVBoxLayout()
         
         i = 0
+        count = 1
+        self.choices = []
         for x in cursor.fetchall():
             
             ques = x[0]
@@ -111,10 +181,13 @@ class Ui_Questions(object):
             option_b = x[2]
             option_c = x[3]
             option_d = x[4]
-            
+            ch = 'a'
+            ch2 = 'b'
+            ch3 = 'c'
+            ch4 = 'd'
             self.ques_label = QLabel(self.frame_4)
-            self.ques_label.setText(ques)
-            self.ques_label.setGeometry(QtCore.QRect(20, 120 * i + 10, 1100, 30))
+            self.ques_label.setText(str(i + 1) + ". " + ques)
+            self.ques_label.setGeometry(QtCore.QRect(20, 130 * i + 10, 1100, 30))
             font = QtGui.QFont()
             font.setPointSize(12)
             font2 = QtGui.QFont()
@@ -124,54 +197,66 @@ class Ui_Questions(object):
 "border: none;\n"
 "color:rgba(255, 255, 255, 230);\n"
 "")
-            self.radioButton1 = QRadioButton(self.frame_4)
-            self.radioButton1.setText(option_a)
-            self.radioButton1.setGeometry(QtCore.QRect(20, 120 * i + 35, 800, 20))
-            self.radioButton1.setStyleSheet("background-color:rgba(0,0,0,0);\n"
-"border: none;\n"
-"color:rgba(255, 255, 255, 230);\n"
-"")
-            self.radioButton1.setFont(font2)
-            self.radioButton2 = QRadioButton(self.frame_4)
-            self.radioButton2.setText(option_b)
+            self.opt1 = QLabel(self.frame_4)
             
-            self.radioButton2.setGeometry(QtCore.QRect(20, 120 * i + 55, 800, 20))
-            self.radioButton2.setStyleSheet("background-color:rgba(0,0,0,0);\n"
+            self.opt1.setText(ch + ". " + option_a)
+            self.opt1.setGeometry(QtCore.QRect(25, 130 * i + 35, 800, 20))
+            self.opt1.setStyleSheet("background-color:rgba(0,0,0,0);\n"
 "border: none;\n"
 "color:rgba(255, 255, 255, 230);\n"
 "")
-            self.radioButton2.setFont(font2)
-            self.radioButton3 = QRadioButton(self.frame_4)
-            self.radioButton3.setText(option_c)
-            self.radioButton3.setGeometry(QtCore.QRect(20, 120 * i + 75, 800, 20))
-            self.radioButton3.setFont(font2)
-            self.radioButton3.setStyleSheet("background-color:rgba(0,0,0,0);\n"
+            self.opt1.setFont(font2)
+            count += 1
+            self.opt2 = QLabel(self.frame_4)
+            
+            self.opt2.setText(ch2 + ". " + option_b)
+            
+            self.opt2.setGeometry(QtCore.QRect(25, 130 * i + 55, 800, 20))
+            self.opt2.setStyleSheet("background-color:rgba(0,0,0,0);\n"
+"border: none;\n"
+"color:rgba(255, 255, 255, 230);\n"
+"")
+            self.opt2.setFont(font2)
+            count += 1
+            self.opt3 = QLabel(self.frame_4)
+            
+            self.opt3.setText(ch3 + ". " + option_c)
+            self.opt3.setGeometry(QtCore.QRect(25, 130 * i + 75, 800, 20))
+            self.opt3.setFont(font2)
+            self.opt3.setStyleSheet("background-color:rgba(0,0,0,0);\n"
+"border: none;\n"
+"color:rgba(255, 255, 255, 230);\n"
+"")
+            count += 1
+            self.opt4= QLabel(self.frame_4)
+            
+            self.opt4.setText(ch4 + ". " + option_d)
+            self.opt4.setGeometry(QtCore.QRect(25, 130 * i + 95, 800, 20))
+            self.opt4.setFont(font2)
+            self.opt4.setStyleSheet("background-color:rgba(0,0,0,0);\n"
 "border: none;\n"
 "color:rgba(255, 255, 255, 230);\n"
 "")
 
-            self.radioButton4= QRadioButton(self.frame_4)
-            self.radioButton4.setText(option_d)
-            self.radioButton4.setGeometry(QtCore.QRect(20, 120 * i + 95, 800, 20))
-            self.radioButton4.setFont(font2)
-            self.radioButton4.setStyleSheet("background-color:rgba(0,0,0,0);\n"
+            self.choice = QLineEdit(self.frame_4)
+            self.choice.setGeometry(QtCore.QRect(25, 130 * i + 120, 80, 25))
+            self.choice.setStyleSheet("background-color:rgba(0,0,0,0);\n"
 "border: none;\n"
+"border-bottom: 2px solid rgba(118, 125, 142, 160);\n"
 "color:rgba(255, 255, 255, 230);\n"
-"")
+"padding-bottom:7px;")
+            self.choice.setFont(font2)
+            # self.choice.setObjectName("choice" + str(i))
             self.vbox.addWidget(self.ques_label)
-            self.vbox.addWidget(self.radioButton1)
-            self.vbox.addWidget(self.radioButton2)
-            self.vbox.addWidget(self.radioButton3)
-            self.vbox.addWidget(self.radioButton4)
+            self.vbox.addWidget(self.opt1)
+            self.vbox.addWidget(self.opt2)
+            self.vbox.addWidget(self.opt3)
+            self.vbox.addWidget(self.opt4)
+            self.vbox.addWidget(self.choice)
+            self.choices.append(self.choice)
             i += 1
-            # bstate = self.radioButton1.toggled.connect(btnstate(self.radioButton1))
-            # print (bstate)
-        def btnstate(self, b):
-            if b.isChecked() == True:
-                return True
-            else:
-                return False
-        # hbox = QHBoxLayout(self.frame_4)
+
+
         font = QtGui.QFont()
         font.setPointSize(12)
         font.setBold(True)
@@ -194,17 +279,34 @@ class Ui_Questions(object):
         # self.vbox.addWidget(hbox)
 
         finishButton.clicked.connect(self.showDialog)
-    
-    # def showDialog(self):
-    #     msgBox = QMessageBox()
-    #     msgBox.setText("Some questions are left, Do you want to submit?")
-    #     msgBox.setWindowTitle("Warning!!!")
-    #     msgBox.setStandardButtons(QMessageBox.Ok | QMessageBox.Cancel)
+        submitButton.clicked.connect(self.showSubmitDialog)
+    def showDialog(self):
+        msgBox = QMessageBox()
+        msgBox.setText("Some questions are left, Do you want to submit?")
+        msgBox.setWindowTitle("Warning!!!")
+        msgBox.setStandardButtons(QMessageBox.Ok | QMessageBox.Cancel)
     #     msgBox.buttonClicked.connect(msgButtonClick)
-    #     returnValue = msgBox.exec_()
+        returnValue = msgBox.exec_()
 
-    #     if returnValue == QMessageBox.Ok:
-    #         print('Submit Clicked')
-        
+        if returnValue == QMessageBox.Ok:
+            print('Submit Clicked')
+            self.dashboard = QtWidgets.QMainWindow() 
+            self.ui = Ui_Admin_dashboard()
+            self.ui.setupUi(self.dashboard)
+            self.dashboard.show()
+            self.close()
     # def msgButtonClick(self):
     #     print("Button Clicked is:")
+
+    def showSubmitDialog(self):
+        msgBox = QMessageBox()
+        msgBox.setText("Are you sure?")
+        msgBox.setWindowTitle("Submission")
+        msgBox.setStandardButtons(QMessageBox.Ok | QMessageBox.Cancel)
+        returnValue = msgBox.exec_()
+        if returnValue == QMessageBox.Ok:
+            print('Ok Clicked')
+            self.dashboard = QtWidgets.QMainWindow() 
+            self.ui = Ui_Admin_dashboard()
+            self.ui.setupUi(self.dashboard)
+            self.dashboard.show()

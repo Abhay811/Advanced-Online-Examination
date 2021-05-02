@@ -12,14 +12,19 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtCore import QSize
 from PyQt5.QtWidgets import QMainWindow, QApplication
 from ui_sign_up import Ui_SignUpWindow
-from ui_admin_dashboard import Ui_Admin_dashboard
+# from ui_admin_dashboard import Ui_Admin_dashboard
 from questions import Ui_Questions
 from PyQt5 import QtWidgets, uic
 import mysql.connector
 from mysql.connector import connection, errorcode
-
+from faculty_dashboard import Ui_Admin_dashboard
 flag = True
 
+# class MainWindow(object):
+#     def __init__(self):
+#         object.__init__(self)
+#         self.ui = Ui_Questions()
+#         self.ui.setupUi(self)
 
 class Ui_Sign_In_Window(object):
     def setupUi(self, Sign_In_Window):
@@ -204,16 +209,20 @@ class Ui_Sign_In_Window(object):
         for x in cursor.fetchall():
                 if x[0] == text_username and x[1] == text_password:
 
-                        # self.dashboard = QtWidgets.QMainWindow() 
-                        # self.ui = Ui_Admin_dashboard()
-                        # self.ui.setupUi(self.dashboard)
-                        # self.dashboard.show()
+                        self.dashboard = QtWidgets.QMainWindow() 
+                        self.ui = Ui_Admin_dashboard()
+                        self.ui.setupUi(self.dashboard)
+                        self.dashboard.show()
 
-                        # uic.loadUi('ui_questions.ui', self)
-                        self.quest = QtWidgets.QMainWindow()
-                        self.ui = Ui_Questions()
-                        self.ui.setupUi(self.quest)
-                        self.quest.show()
+
+                        # self.quest = QtWidgets.QMainWindow()
+                        # self.ui = Ui_Questions()
+                        # self.ui.setupUi(self.quest)
+                        # self.quest.show()
+
+                        # self.main = MainWindow()
+                        # self.main.show()
+                        # self.close()
                         break
                 else:
                         print ("Wrong username or password!!!")
