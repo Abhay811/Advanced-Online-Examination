@@ -213,7 +213,7 @@ class Ui_Sign_In_Window(object):
                         self.ui = Ui_Admin_dashboard()
                         self.ui.setupUi(self.dashboard)
                         self.dashboard.show()
-
+                        
 
                         # self.quest = QtWidgets.QMainWindow()
                         # self.ui = Ui_Questions()

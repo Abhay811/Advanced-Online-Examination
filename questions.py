@@ -14,7 +14,8 @@ from PyQt5.QtCore import QSize
 import mysql.connector
 from mysql.connector import connection, errorcode
 from PyQt5.QtWidgets import *
-from ui_admin_dashboard import Ui_Admin_dashboard
+# from ui_admin_dashboard import Ui_Admin_dashboard
+from faculty_dashboard import Ui_Admin_dashboard
 DURATION = 10
 
 def sec_to_min(secs: int):
@@ -146,6 +147,7 @@ class Ui_Questions(object):
             self.ui = Ui_Admin_dashboard()
             self.ui.setupUi(self.dashboard)
             self.dashboard.show()
+            
             # self.close()
         self.update_gui()
     
@@ -290,10 +292,29 @@ class Ui_Questions(object):
 
         if returnValue == QMessageBox.Ok:
             print('Submit Clicked')
+            marks = 0
+            try:
+                mydb = connection.MySQLConnection(
+                    database = 'online_examination_system',
+                    host = '127.0.0.1',
+                    user = 'root',
+                    password = 'HSbF6@123$'
+                )
+            except mysql.connector.Error as err:
+                print(err)
+            access_correct = ('SELECT option_correct from table_questions')
+            cursor = mydb.cursor()
+            cursor.execute(access_correct)
+            i = 0
+            for x in cursor.fetchall():
+                if str(self.choices[i].text()) == x[0]:
+                    marks += 1
+                i += 1
             self.dashboard = QtWidgets.QMainWindow() 
             self.ui = Ui_Admin_dashboard()
             self.ui.setupUi(self.dashboard)
             self.dashboard.show()
+            
             self.close()
     # def msgButtonClick(self):
     #     print("Button Clicked is:")
@@ -306,6 +327,28 @@ class Ui_Questions(object):
         returnValue = msgBox.exec_()
         if returnValue == QMessageBox.Ok:
             print('Ok Clicked')
+            marks = 0
+            try:
+                mydb = connection.MySQLConnection(
+                    database = 'online_examination_system',
+                    host = '127.0.0.1',
+                    user = 'root',
+                    password = 'HSbF6@123$'
+                )
+            except mysql.connector.Error as err:
+                print(err)
+            access_correct = ('SELECT option_correct from table_questions')
+            cursor = mydb.cursor()
+            cursor.execute(access_correct)
+            i = 0
+            for x in cursor.fetchall():
+                if str(self.choices[i].text()) == x[0]:
+                    marks += 1
+                i += 1
+
+            add_data = ("INSERT INTO marks_table (student_id, exam_name, score, correct_questions, wrong_questions, max_marks) VALUES (%i, %s, %i, %i, %i, %i)")
+            data = (6, "Computer Networks", marks, marks, 20 - marks, 20)
+            
             self.dashboard = QtWidgets.QMainWindow() 
             self.ui = Ui_Admin_dashboard()
             self.ui.setupUi(self.dashboard)

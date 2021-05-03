@@ -9,6 +9,8 @@
 
 
 from PyQt5 import QtCore, QtGui, QtWidgets
+import mysql.connector
+from mysql.connector import connection, errorcode
 
 
 class Ui_Admin_dashboard(object):
@@ -464,29 +466,6 @@ class Ui_Admin_dashboard(object):
 "}")
         self.btn_dashboard.setObjectName("btn_dashboard")
         self.layout_menus.addWidget(self.btn_dashboard)
-        self.btn_departments = QtWidgets.QPushButton(self.frame_menus)
-        self.btn_departments.setMinimumSize(QtCore.QSize(0, 60))
-        self.btn_departments.setStyleSheet("QPushButton {    \n"
-"    background-image:url(:/16x16/icons/16x16/cil-house.png);\n"
-"    background-position: left center;\n"
-"    background-repeat: no-repeat;\n"
-"    border: none;\n"
-"    border-left: 28px solid rgb(27, 29, 35);\n"
-"    background-color: rgb(27, 29, 35);\n"
-"    text-align: left;\n"
-"    padding-left: 45px;\n"
-"}\n"
-"QPushButton:hover {\n"
-"    background-color: rgb(33, 37, 43);\n"
-"    border-left: 28px solid rgb(33, 37, 43);\n"
-"}\n"
-"QPushButton:pressed {    \n"
-"    background-color: rgb(85, 170, 255);\n"
-"    border-left: 28px solid rgb(85, 170, 255);\n"
-"}\n"
-"")
-        self.btn_departments.setObjectName("btn_departments")
-        self.layout_menus.addWidget(self.btn_departments)
         self.btn_subjects = QtWidgets.QPushButton(self.frame_menus)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Fixed)
         sizePolicy.setHorizontalStretch(0)
@@ -517,22 +496,22 @@ class Ui_Admin_dashboard(object):
 "    border-left: 28px solid rgb(85, 170, 255);\n"
 "}")
         icon3 = QtGui.QIcon()
-        icon3.addPixmap(QtGui.QPixmap("img/Simple_PySide_Base-master/Simple_PySide_Base-master/icons/16x16/cil-notes.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon3.addPixmap(QtGui.QPixmap("C:/Users/Abhay/.designer/backup/img/Simple_PySide_Base-master/Simple_PySide_Base-master/icons/16x16/cil-notes.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.btn_subjects.setIcon(icon3)
         self.btn_subjects.setObjectName("btn_subjects")
         self.layout_menus.addWidget(self.btn_subjects)
-        self.btn_students_list = QtWidgets.QPushButton(self.frame_menus)
+        self.btn_students = QtWidgets.QPushButton(self.frame_menus)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Fixed)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.btn_students_list.sizePolicy().hasHeightForWidth())
-        self.btn_students_list.setSizePolicy(sizePolicy)
-        self.btn_students_list.setMinimumSize(QtCore.QSize(0, 60))
+        sizePolicy.setHeightForWidth(self.btn_students.sizePolicy().hasHeightForWidth())
+        self.btn_students.setSizePolicy(sizePolicy)
+        self.btn_students.setMinimumSize(QtCore.QSize(0, 60))
         font = QtGui.QFont()
         font.setFamily("Segoe UI")
-        self.btn_students_list.setFont(font)
-        self.btn_students_list.setLayoutDirection(QtCore.Qt.LeftToRight)
-        self.btn_students_list.setStyleSheet("QPushButton {    \n"
+        self.btn_students.setFont(font)
+        self.btn_students.setLayoutDirection(QtCore.Qt.LeftToRight)
+        self.btn_students.setStyleSheet("QPushButton {    \n"
 "    background-image: url(:/16x16/icons/16x16/cil-people.png);\n"
 "    background-position: left center;\n"
 "    background-repeat: no-repeat;\n"
@@ -550,8 +529,8 @@ class Ui_Admin_dashboard(object):
 "    background-color: rgb(85, 170, 255);\n"
 "    border-left: 28px solid rgb(85, 170, 255);\n"
 "}")
-        self.btn_students_list.setObjectName("btn_students_list")
-        self.layout_menus.addWidget(self.btn_students_list)
+        self.btn_students.setObjectName("btn_students")
+        self.layout_menus.addWidget(self.btn_students)
         self.btn_exams = QtWidgets.QPushButton(self.frame_menus)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Fixed)
         sizePolicy.setHorizontalStretch(0)
@@ -583,19 +562,18 @@ class Ui_Admin_dashboard(object):
 "}")
         self.btn_exams.setObjectName("btn_exams")
         self.layout_menus.addWidget(self.btn_exams)
-        self.verticalLayout_5.addWidget(self.frame_menus)
-        self.btn_notices = QtWidgets.QPushButton(self.frame_left_menu)
+        self.btn_results = QtWidgets.QPushButton(self.frame_menus)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Fixed)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.btn_notices.sizePolicy().hasHeightForWidth())
-        self.btn_notices.setSizePolicy(sizePolicy)
-        self.btn_notices.setMinimumSize(QtCore.QSize(0, 60))
+        sizePolicy.setHeightForWidth(self.btn_results.sizePolicy().hasHeightForWidth())
+        self.btn_results.setSizePolicy(sizePolicy)
+        self.btn_results.setMinimumSize(QtCore.QSize(0, 60))
         font = QtGui.QFont()
         font.setFamily("Segoe UI")
-        self.btn_notices.setFont(font)
-        self.btn_notices.setLayoutDirection(QtCore.Qt.LeftToRight)
-        self.btn_notices.setStyleSheet("QPushButton {    \n"
+        self.btn_results.setFont(font)
+        self.btn_results.setLayoutDirection(QtCore.Qt.LeftToRight)
+        self.btn_results.setStyleSheet("QPushButton {    \n"
 "    background-image: url(:/16x16/icons/16x16/cil-justify-left.png);\n"
 "    background-position: left center;\n"
 "    background-repeat: no-repeat;\n"
@@ -613,8 +591,9 @@ class Ui_Admin_dashboard(object):
 "    background-color: rgb(85, 170, 255);\n"
 "    border-left: 28px solid rgb(85, 170, 255);\n"
 "}")
-        self.btn_notices.setObjectName("btn_notices")
-        self.verticalLayout_5.addWidget(self.btn_notices)
+        self.btn_results.setObjectName("btn_results")
+        self.layout_menus.addWidget(self.btn_results)
+        self.verticalLayout_5.addWidget(self.frame_menus)
         self.frame_extra_menus = QtWidgets.QFrame(self.frame_left_menu)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Preferred)
         sizePolicy.setHorizontalStretch(0)
@@ -694,32 +673,218 @@ class Ui_Admin_dashboard(object):
         self.frame_content.setFrameShape(QtWidgets.QFrame.NoFrame)
         self.frame_content.setFrameShadow(QtWidgets.QFrame.Raised)
         self.frame_content.setObjectName("frame_content")
-        self.frame_dashboard = QtWidgets.QFrame(self.frame_content)
-        self.frame_dashboard.setGeometry(QtCore.QRect(0, 0, 1051, 615))
-        self.frame_dashboard.setFrameShape(QtWidgets.QFrame.StyledPanel)
-        self.frame_dashboard.setFrameShadow(QtWidgets.QFrame.Raised)
-        self.frame_dashboard.setObjectName("frame_dashboard")
+        self.frame_examinations = QtWidgets.QFrame(self.frame_content)
+        self.frame_examinations.setGeometry(QtCore.QRect(0, 0, 1091, 626))
+        self.frame_examinations.setFrameShape(QtWidgets.QFrame.StyledPanel)
+        self.frame_examinations.setFrameShadow(QtWidgets.QFrame.Raised)
+        self.frame_examinations.setObjectName("frame_examinations")
+        self.verticalLayout_25 = QtWidgets.QVBoxLayout(self.frame_examinations)
+        self.verticalLayout_25.setObjectName("verticalLayout_25")
+        self.frame_2 = QtWidgets.QFrame(self.frame_examinations)
+        self.frame_2.setMinimumSize(QtCore.QSize(0, 80))
+        self.frame_2.setFrameShape(QtWidgets.QFrame.StyledPanel)
+        self.frame_2.setFrameShadow(QtWidgets.QFrame.Raised)
+        self.frame_2.setObjectName("frame_2")
+        self.label_45 = QtWidgets.QLabel(self.frame_2)
+        self.label_45.setGeometry(QtCore.QRect(10, 10, 191, 41))
+        font = QtGui.QFont()
+        font.setPointSize(14)
+        font.setBold(True)
+        self.label_45.setFont(font)
+        self.label_45.setObjectName("label_45")
+        self.verticalLayout_25.addWidget(self.frame_2)
+        self.frame = QtWidgets.QFrame(self.frame_examinations)
+        self.frame.setMinimumSize(QtCore.QSize(0, 520))
+        self.frame.setFrameShape(QtWidgets.QFrame.StyledPanel)
+        self.frame.setFrameShadow(QtWidgets.QFrame.Raised)
+        self.frame.setObjectName("frame")
+        self.verticalLayout_24 = QtWidgets.QVBoxLayout(self.frame)
+        self.verticalLayout_24.setObjectName("verticalLayout_24")
+        self.pushButton = QtWidgets.QPushButton(self.frame)
+        self.pushButton.setMinimumSize(QtCore.QSize(0, 40))
+        font = QtGui.QFont()
+        font.setPointSize(14)
+        font.setBold(True)
+        self.pushButton.setFont(font)
+        self.pushButton.setObjectName("pushButton")
+        self.verticalLayout_24.addWidget(self.pushButton)
+        self.verticalLayout_8 = QtWidgets.QVBoxLayout()
+        self.verticalLayout_8.setObjectName("verticalLayout_8")
+        self.verticalLayout_24.addLayout(self.verticalLayout_8)
+        self.verticalLayout_25.addWidget(self.frame)
         self.frame_subjects = QtWidgets.QFrame(self.frame_content)
-        self.frame_subjects.setGeometry(QtCore.QRect(0, 0, 1051, 615))
+        self.frame_subjects.setGeometry(QtCore.QRect(0, 0, 1091, 615))
         self.frame_subjects.setFrameShape(QtWidgets.QFrame.StyledPanel)
         self.frame_subjects.setFrameShadow(QtWidgets.QFrame.Raised)
         self.frame_subjects.setObjectName("frame_subjects")
         self.frame_students = QtWidgets.QFrame(self.frame_content)
-        self.frame_students.setGeometry(QtCore.QRect(0, 0, 1051, 615))
+        self.frame_students.setGeometry(QtCore.QRect(0, 0, 1091, 606))
         self.frame_students.setFrameShape(QtWidgets.QFrame.StyledPanel)
         self.frame_students.setFrameShadow(QtWidgets.QFrame.Raised)
         self.frame_students.setObjectName("frame_students")
-        self.frame_examinations = QtWidgets.QFrame(self.frame_content)
-        self.frame_examinations.setGeometry(QtCore.QRect(0, 0, 1051, 615))
-        self.frame_examinations.setFrameShape(QtWidgets.QFrame.StyledPanel)
-        self.frame_examinations.setFrameShadow(QtWidgets.QFrame.Raised)
-        self.frame_examinations.setObjectName("frame_examinations")
         self.frame_results = QtWidgets.QFrame(self.frame_content)
-        self.frame_results.setGeometry(QtCore.QRect(0, 0, 1051, 411))
+        self.frame_results.setGeometry(QtCore.QRect(0, 0, 1091, 621))
         self.frame_results.setFrameShape(QtWidgets.QFrame.StyledPanel)
         self.frame_results.setFrameShadow(QtWidgets.QFrame.Raised)
         self.frame_results.setObjectName("frame_results")
-        self.verticalLayout_6 = QtWidgets.QVBoxLayout(self.frame_results)
+        self.horizontalLayout_36 = QtWidgets.QHBoxLayout(self.frame_results)
+        self.horizontalLayout_36.setObjectName("horizontalLayout_36")
+        self.horizontalLayout_35 = QtWidgets.QHBoxLayout()
+        self.horizontalLayout_35.setObjectName("horizontalLayout_35")
+        self.verticalLayout_19 = QtWidgets.QVBoxLayout()
+        self.verticalLayout_19.setObjectName("verticalLayout_19")
+        self.verticalLayout_21 = QtWidgets.QVBoxLayout()
+        self.verticalLayout_21.setObjectName("verticalLayout_21")
+        self.label_13 = QtWidgets.QLabel(self.frame_results)
+        self.label_13.setMinimumSize(QtCore.QSize(0, 200))
+        font = QtGui.QFont()
+        font.setPointSize(24)
+        font.setBold(True)
+        self.label_13.setFont(font)
+        self.label_13.setAlignment(QtCore.Qt.AlignCenter)
+        self.label_13.setObjectName("label_13")
+        self.verticalLayout_21.addWidget(self.label_13)
+        self.horizontalLayout_37 = QtWidgets.QHBoxLayout()
+        self.horizontalLayout_37.setObjectName("horizontalLayout_37")
+        self.verticalLayout_22 = QtWidgets.QVBoxLayout()
+        self.verticalLayout_22.setObjectName("verticalLayout_22")
+        self.label_21 = QtWidgets.QLabel(self.frame_results)
+        font = QtGui.QFont()
+        font.setPointSize(14)
+        font.setBold(True)
+        self.label_21.setFont(font)
+        self.label_21.setObjectName("label_21")
+        self.verticalLayout_22.addWidget(self.label_21)
+        self.label_20 = QtWidgets.QLabel(self.frame_results)
+        font = QtGui.QFont()
+        font.setPointSize(11)
+        self.label_20.setFont(font)
+        self.label_20.setAlignment(QtCore.Qt.AlignCenter)
+        self.label_20.setObjectName("label_20")
+        self.verticalLayout_22.addWidget(self.label_20)
+        self.label_26 = QtWidgets.QLabel(self.frame_results)
+        font = QtGui.QFont()
+        font.setPointSize(11)
+        self.label_26.setFont(font)
+        self.label_26.setAlignment(QtCore.Qt.AlignCenter)
+        self.label_26.setObjectName("label_26")
+        self.verticalLayout_22.addWidget(self.label_26)
+        self.label_28 = QtWidgets.QLabel(self.frame_results)
+        font = QtGui.QFont()
+        font.setPointSize(11)
+        self.label_28.setFont(font)
+        self.label_28.setAlignment(QtCore.Qt.AlignCenter)
+        self.label_28.setObjectName("label_28")
+        self.verticalLayout_22.addWidget(self.label_28)
+        self.label_25 = QtWidgets.QLabel(self.frame_results)
+        font = QtGui.QFont()
+        font.setPointSize(11)
+        self.label_25.setFont(font)
+        self.label_25.setAlignment(QtCore.Qt.AlignCenter)
+        self.label_25.setObjectName("label_25")
+        self.verticalLayout_22.addWidget(self.label_25)
+        self.label_27 = QtWidgets.QLabel(self.frame_results)
+        font = QtGui.QFont()
+        font.setPointSize(11)
+        self.label_27.setFont(font)
+        self.label_27.setAlignment(QtCore.Qt.AlignCenter)
+        self.label_27.setObjectName("label_27")
+        self.verticalLayout_22.addWidget(self.label_27)
+        self.horizontalLayout_37.addLayout(self.verticalLayout_22)
+        self.verticalLayout_23 = QtWidgets.QVBoxLayout()
+        self.verticalLayout_23.setObjectName("verticalLayout_23")
+        self.label_30 = QtWidgets.QLabel(self.frame_results)
+        self.label_30.setText("")
+        self.label_30.setObjectName("label_30")
+        self.verticalLayout_23.addWidget(self.label_30)
+        self.label_31 = QtWidgets.QLabel(self.frame_results)
+        font = QtGui.QFont()
+        font.setPointSize(11)
+        self.label_31.setFont(font)
+        self.label_31.setObjectName("label_31")
+        self.verticalLayout_23.addWidget(self.label_31)
+        self.label_32 = QtWidgets.QLabel(self.frame_results)
+        font = QtGui.QFont()
+        font.setPointSize(11)
+        self.label_32.setFont(font)
+        self.label_32.setObjectName("label_32")
+        self.verticalLayout_23.addWidget(self.label_32)
+        self.label_34 = QtWidgets.QLabel(self.frame_results)
+        font = QtGui.QFont()
+        font.setPointSize(11)
+        self.label_34.setFont(font)
+        self.label_34.setObjectName("label_34")
+        self.verticalLayout_23.addWidget(self.label_34)
+        self.label_33 = QtWidgets.QLabel(self.frame_results)
+        font = QtGui.QFont()
+        font.setPointSize(11)
+        self.label_33.setFont(font)
+        self.label_33.setObjectName("label_33")
+        self.verticalLayout_23.addWidget(self.label_33)
+        self.label_29 = QtWidgets.QLabel(self.frame_results)
+        font = QtGui.QFont()
+        font.setPointSize(11)
+        self.label_29.setFont(font)
+        self.label_29.setObjectName("label_29")
+        self.verticalLayout_23.addWidget(self.label_29)
+        self.horizontalLayout_37.addLayout(self.verticalLayout_23)
+        self.verticalLayout_21.addLayout(self.horizontalLayout_37)
+        self.verticalLayout_19.addLayout(self.verticalLayout_21)
+        self.horizontalLayout_35.addLayout(self.verticalLayout_19)
+        self.verticalLayout_20 = QtWidgets.QVBoxLayout()
+        self.verticalLayout_20.setObjectName("verticalLayout_20")
+        self.label_35 = QtWidgets.QLabel(self.frame_results)
+        self.label_35.setText("")
+        self.label_35.setObjectName("label_35")
+        self.verticalLayout_20.addWidget(self.label_35)
+        self.label_38 = QtWidgets.QLabel(self.frame_results)
+        self.label_38.setText("")
+        self.label_38.setObjectName("label_38")
+        self.verticalLayout_20.addWidget(self.label_38)
+        self.label_44 = QtWidgets.QLabel(self.frame_results)
+        font = QtGui.QFont()
+        font.setPointSize(14)
+        font.setBold(True)
+        self.label_44.setFont(font)
+        self.label_44.setObjectName("label_44")
+        self.verticalLayout_20.addWidget(self.label_44)
+        self.label_42 = QtWidgets.QLabel(self.frame_results)
+        self.label_42.setObjectName("label_42")
+        self.verticalLayout_20.addWidget(self.label_42)
+        self.label_43 = QtWidgets.QLabel(self.frame_results)
+        self.label_43.setText("")
+        self.label_43.setObjectName("label_43")
+        self.verticalLayout_20.addWidget(self.label_43)
+        self.label_40 = QtWidgets.QLabel(self.frame_results)
+        self.label_40.setText("")
+        self.label_40.setObjectName("label_40")
+        self.verticalLayout_20.addWidget(self.label_40)
+        self.label_41 = QtWidgets.QLabel(self.frame_results)
+        self.label_41.setText("")
+        self.label_41.setObjectName("label_41")
+        self.verticalLayout_20.addWidget(self.label_41)
+        self.label_39 = QtWidgets.QLabel(self.frame_results)
+        self.label_39.setText("")
+        self.label_39.setObjectName("label_39")
+        self.verticalLayout_20.addWidget(self.label_39)
+        self.label_37 = QtWidgets.QLabel(self.frame_results)
+        self.label_37.setText("")
+        self.label_37.setObjectName("label_37")
+        self.verticalLayout_20.addWidget(self.label_37)
+        self.label_36 = QtWidgets.QLabel(self.frame_results)
+        self.label_36.setText("")
+        self.label_36.setObjectName("label_36")
+        self.verticalLayout_20.addWidget(self.label_36)
+        self.horizontalLayout_35.addLayout(self.verticalLayout_20)
+        self.horizontalLayout_36.addLayout(self.horizontalLayout_35)
+        self.frame_dashboard = QtWidgets.QFrame(self.frame_content)
+        self.frame_dashboard.setGeometry(QtCore.QRect(0, 0, 1061, 451))
+        self.frame_dashboard.setFrameShape(QtWidgets.QFrame.StyledPanel)
+        self.frame_dashboard.setFrameShadow(QtWidgets.QFrame.Raised)
+        self.frame_dashboard.setObjectName("frame_dashboard")
+        self.verticalLayout_6 = QtWidgets.QVBoxLayout(self.frame_dashboard)
+        self.verticalLayout_6.setContentsMargins(0, 0, 0, 0)
+        self.verticalLayout_6.setSpacing(5)
         self.verticalLayout_6.setObjectName("verticalLayout_6")
         self.horizontalLayout_9 = QtWidgets.QHBoxLayout()
         self.horizontalLayout_9.setSizeConstraint(QtWidgets.QLayout.SetFixedSize)
@@ -734,20 +899,29 @@ class Ui_Admin_dashboard(object):
         self.horizontalLayout_12.setContentsMargins(0, 0, -1, 0)
         self.horizontalLayout_12.setSpacing(0)
         self.horizontalLayout_12.setObjectName("horizontalLayout_12")
-        self.label_2 = QtWidgets.QLabel(self.frame_results)
+        self.label_2 = QtWidgets.QLabel(self.frame_dashboard)
         self.label_2.setMinimumSize(QtCore.QSize(100, 100))
         font = QtGui.QFont()
         font.setPointSize(16)
         font.setBold(True)
         self.label_2.setFont(font)
+        self.label_2.setStyleSheet("border-color: rgb(0, 0, 0);\n"
+"border: 2px solid;\n"
+"border-right-color:rgb(40, 44, 52);\n"
+"border-bottom-color:rgb(40, 44, 52);")
         self.label_2.setAlignment(QtCore.Qt.AlignCenter)
         self.label_2.setObjectName("label_2")
         self.horizontalLayout_12.addWidget(self.label_2)
-        self.label = QtWidgets.QLabel(self.frame_results)
+        self.label = QtWidgets.QLabel(self.frame_dashboard)
         self.label.setMinimumSize(QtCore.QSize(100, 100))
         font = QtGui.QFont()
         font.setPointSize(14)
         self.label.setFont(font)
+        self.label.setStyleSheet("\n"
+"border-color: rgb(0, 0, 0);\n"
+"border: 2px solid;\n"
+"border-left-color:rgb(40, 44, 52);\n"
+"border-bottom-color:rgb(40, 44, 52);")
         self.label.setText("")
         self.label.setPixmap(QtGui.QPixmap(":/20x20/icons/20x20/cil-user.png"))
         self.label.setAlignment(QtCore.Qt.AlignCenter)
@@ -756,12 +930,15 @@ class Ui_Admin_dashboard(object):
         self.verticalLayout_7.addLayout(self.horizontalLayout_12)
         self.horizontalLayout_18 = QtWidgets.QHBoxLayout()
         self.horizontalLayout_18.setObjectName("horizontalLayout_18")
-        self.label_3 = QtWidgets.QLabel(self.frame_results)
+        self.label_3 = QtWidgets.QLabel(self.frame_dashboard)
         self.label_3.setMinimumSize(QtCore.QSize(0, 100))
         font = QtGui.QFont()
         font.setPointSize(14)
         font.setBold(True)
         self.label_3.setFont(font)
+        self.label_3.setStyleSheet("border-color: rgb(0, 0, 0);\n"
+"border: 2px solid;\n"
+"border-top-color:rgb(40, 44, 52);")
         self.label_3.setAlignment(QtCore.Qt.AlignCenter)
         self.label_3.setObjectName("label_3")
         self.horizontalLayout_18.addWidget(self.label_3)
@@ -773,15 +950,24 @@ class Ui_Admin_dashboard(object):
         self.horizontalLayout_20 = QtWidgets.QHBoxLayout()
         self.horizontalLayout_20.setSpacing(0)
         self.horizontalLayout_20.setObjectName("horizontalLayout_20")
-        self.label_4 = QtWidgets.QLabel(self.frame_results)
+        self.label_4 = QtWidgets.QLabel(self.frame_dashboard)
         font = QtGui.QFont()
         font.setPointSize(16)
         font.setBold(True)
         self.label_4.setFont(font)
+        self.label_4.setStyleSheet("border-color: rgb(0, 0, 0);\n"
+"border: 2px solid;\n"
+"border-right-color:rgb(40, 44, 52);\n"
+"border-bottom-color:rgb(40, 44, 52);")
         self.label_4.setAlignment(QtCore.Qt.AlignCenter)
         self.label_4.setObjectName("label_4")
         self.horizontalLayout_20.addWidget(self.label_4)
-        self.label_5 = QtWidgets.QLabel(self.frame_results)
+        self.label_5 = QtWidgets.QLabel(self.frame_dashboard)
+        self.label_5.setStyleSheet("\n"
+"border-color: rgb(0, 0, 0);\n"
+"border: 2px solid;\n"
+"border-left-color:rgb(40, 44, 52);\n"
+"border-bottom-color:rgb(40, 44, 52);")
         self.label_5.setText("")
         self.label_5.setPixmap(QtGui.QPixmap(":/20x20/icons/20x20/cil-notes.png"))
         self.label_5.setAlignment(QtCore.Qt.AlignCenter)
@@ -791,11 +977,14 @@ class Ui_Admin_dashboard(object):
         self.horizontalLayout_19 = QtWidgets.QHBoxLayout()
         self.horizontalLayout_19.setSpacing(0)
         self.horizontalLayout_19.setObjectName("horizontalLayout_19")
-        self.label_6 = QtWidgets.QLabel(self.frame_results)
+        self.label_6 = QtWidgets.QLabel(self.frame_dashboard)
         font = QtGui.QFont()
         font.setPointSize(14)
         font.setBold(True)
         self.label_6.setFont(font)
+        self.label_6.setStyleSheet("border-color: rgb(0, 0, 0);\n"
+"border: 2px solid;\n"
+"border-top-color:rgb(40, 44, 52);")
         self.label_6.setAlignment(QtCore.Qt.AlignCenter)
         self.label_6.setObjectName("label_6")
         self.horizontalLayout_19.addWidget(self.label_6)
@@ -807,15 +996,23 @@ class Ui_Admin_dashboard(object):
         self.horizontalLayout_22 = QtWidgets.QHBoxLayout()
         self.horizontalLayout_22.setSpacing(0)
         self.horizontalLayout_22.setObjectName("horizontalLayout_22")
-        self.label_8 = QtWidgets.QLabel(self.frame_results)
+        self.label_8 = QtWidgets.QLabel(self.frame_dashboard)
         font = QtGui.QFont()
         font.setPointSize(16)
         font.setBold(True)
         self.label_8.setFont(font)
+        self.label_8.setStyleSheet("border-color: rgb(0, 0, 0);\n"
+"border: 2px solid;\n"
+"border-right-color:rgb(40, 44, 52);\n"
+"border-bottom-color:rgb(40, 44, 52);")
         self.label_8.setAlignment(QtCore.Qt.AlignCenter)
         self.label_8.setObjectName("label_8")
         self.horizontalLayout_22.addWidget(self.label_8)
-        self.label_7 = QtWidgets.QLabel(self.frame_results)
+        self.label_7 = QtWidgets.QLabel(self.frame_dashboard)
+        self.label_7.setStyleSheet("border-color: rgb(0, 0, 0);\n"
+"border: 2px solid;\n"
+"border-left-color:rgb(40, 44, 52);\n"
+"border-bottom-color:rgb(40, 44, 52);")
         self.label_7.setText("")
         self.label_7.setPixmap(QtGui.QPixmap(":/20x20/icons/20x20/cil-newspaper.png"))
         self.label_7.setAlignment(QtCore.Qt.AlignCenter)
@@ -825,11 +1022,14 @@ class Ui_Admin_dashboard(object):
         self.horizontalLayout_21 = QtWidgets.QHBoxLayout()
         self.horizontalLayout_21.setSpacing(0)
         self.horizontalLayout_21.setObjectName("horizontalLayout_21")
-        self.label_9 = QtWidgets.QLabel(self.frame_results)
+        self.label_9 = QtWidgets.QLabel(self.frame_dashboard)
         font = QtGui.QFont()
         font.setPointSize(14)
         font.setBold(True)
         self.label_9.setFont(font)
+        self.label_9.setStyleSheet("border-color: rgb(0, 0, 0);\n"
+"border: 2px solid;\n"
+"border-top-color:rgb(40, 44, 52);")
         self.label_9.setAlignment(QtCore.Qt.AlignCenter)
         self.label_9.setObjectName("label_9")
         self.horizontalLayout_21.addWidget(self.label_9)
@@ -841,15 +1041,23 @@ class Ui_Admin_dashboard(object):
         self.horizontalLayout_23 = QtWidgets.QHBoxLayout()
         self.horizontalLayout_23.setSpacing(0)
         self.horizontalLayout_23.setObjectName("horizontalLayout_23")
-        self.label_23 = QtWidgets.QLabel(self.frame_results)
+        self.label_23 = QtWidgets.QLabel(self.frame_dashboard)
         font = QtGui.QFont()
         font.setPointSize(16)
         font.setBold(True)
         self.label_23.setFont(font)
+        self.label_23.setStyleSheet("border-color: rgb(0, 0, 0);\n"
+"border: 2px solid;\n"
+"border-right-color:rgb(40, 44, 52);\n"
+"border-bottom-color:rgb(40, 44, 52);")
         self.label_23.setAlignment(QtCore.Qt.AlignCenter)
         self.label_23.setObjectName("label_23")
         self.horizontalLayout_23.addWidget(self.label_23)
-        self.label_22 = QtWidgets.QLabel(self.frame_results)
+        self.label_22 = QtWidgets.QLabel(self.frame_dashboard)
+        self.label_22.setStyleSheet("border-color: rgb(0, 0, 0);\n"
+"border: 2px solid;\n"
+"border-left-color:rgb(40, 44, 52);\n"
+"border-bottom-color:rgb(40, 44, 52);")
         self.label_22.setText("")
         self.label_22.setPixmap(QtGui.QPixmap(":/20x20/icons/20x20/cil-check.png"))
         self.label_22.setAlignment(QtCore.Qt.AlignCenter)
@@ -859,11 +1067,14 @@ class Ui_Admin_dashboard(object):
         self.horizontalLayout_26 = QtWidgets.QHBoxLayout()
         self.horizontalLayout_26.setSpacing(0)
         self.horizontalLayout_26.setObjectName("horizontalLayout_26")
-        self.label_24 = QtWidgets.QLabel(self.frame_results)
+        self.label_24 = QtWidgets.QLabel(self.frame_dashboard)
         font = QtGui.QFont()
         font.setPointSize(14)
         font.setBold(True)
         self.label_24.setFont(font)
+        self.label_24.setStyleSheet("border-color: rgb(0, 0, 0);\n"
+"border: 2px solid;\n"
+"border-top-color:rgb(40, 44, 52);")
         self.label_24.setAlignment(QtCore.Qt.AlignCenter)
         self.label_24.setObjectName("label_24")
         self.horizontalLayout_26.addWidget(self.label_24)
@@ -880,17 +1091,25 @@ class Ui_Admin_dashboard(object):
         self.horizontalLayout_27 = QtWidgets.QHBoxLayout()
         self.horizontalLayout_27.setSpacing(0)
         self.horizontalLayout_27.setObjectName("horizontalLayout_27")
-        self.label_15 = QtWidgets.QLabel(self.frame_results)
+        self.label_15 = QtWidgets.QLabel(self.frame_dashboard)
         self.label_15.setMinimumSize(QtCore.QSize(100, 100))
         font = QtGui.QFont()
         font.setPointSize(16)
         font.setBold(True)
         self.label_15.setFont(font)
+        self.label_15.setStyleSheet("border-color: rgb(0, 0, 0);\n"
+"border: 2px solid;\n"
+"border-right-color:rgb(40, 44, 52);\n"
+"border-bottom-color:rgb(40, 44, 52);")
         self.label_15.setAlignment(QtCore.Qt.AlignCenter)
         self.label_15.setObjectName("label_15")
         self.horizontalLayout_27.addWidget(self.label_15)
-        self.label_14 = QtWidgets.QLabel(self.frame_results)
+        self.label_14 = QtWidgets.QLabel(self.frame_dashboard)
         self.label_14.setMinimumSize(QtCore.QSize(100, 100))
+        self.label_14.setStyleSheet("border-color: rgb(0, 0, 0);\n"
+"border: 2px solid;\n"
+"border-left-color:rgb(40, 44, 52);\n"
+"border-bottom-color:rgb(40, 44, 52);")
         self.label_14.setText("")
         self.label_14.setPixmap(QtGui.QPixmap(":/20x20/icons/20x20/cil-x-circle.png"))
         self.label_14.setAlignment(QtCore.Qt.AlignCenter)
@@ -900,33 +1119,44 @@ class Ui_Admin_dashboard(object):
         self.horizontalLayout_29 = QtWidgets.QHBoxLayout()
         self.horizontalLayout_29.setSpacing(0)
         self.horizontalLayout_29.setObjectName("horizontalLayout_29")
-        self.label_10 = QtWidgets.QLabel(self.frame_results)
+        self.label_10 = QtWidgets.QLabel(self.frame_dashboard)
         self.label_10.setMinimumSize(QtCore.QSize(0, 100))
         font = QtGui.QFont()
         font.setPointSize(14)
         font.setBold(True)
         self.label_10.setFont(font)
+        self.label_10.setStyleSheet("border-color: rgb(0, 0, 0);\n"
+"border: 2px solid;\n"
+"border-top-color:rgb(40, 44, 52);")
         self.label_10.setAlignment(QtCore.Qt.AlignCenter)
         self.label_10.setObjectName("label_10")
         self.horizontalLayout_29.addWidget(self.label_10)
         self.verticalLayout_14.addLayout(self.horizontalLayout_29)
         self.horizontalLayout_11.addLayout(self.verticalLayout_14)
         self.verticalLayout_17 = QtWidgets.QVBoxLayout()
-        self.verticalLayout_17.setContentsMargins(5, 5, 5, 5)
-        self.verticalLayout_17.setSpacing(5)
+        self.verticalLayout_17.setContentsMargins(0, 0, 0, 0)
+        self.verticalLayout_17.setSpacing(0)
         self.verticalLayout_17.setObjectName("verticalLayout_17")
         self.horizontalLayout_30 = QtWidgets.QHBoxLayout()
         self.horizontalLayout_30.setSpacing(0)
         self.horizontalLayout_30.setObjectName("horizontalLayout_30")
-        self.label_17 = QtWidgets.QLabel(self.frame_results)
+        self.label_17 = QtWidgets.QLabel(self.frame_dashboard)
         font = QtGui.QFont()
         font.setPointSize(16)
         font.setBold(True)
         self.label_17.setFont(font)
+        self.label_17.setStyleSheet("border-color: rgb(0, 0, 0);\n"
+"border: 2px solid;\n"
+"border-right-color:rgb(40, 44, 52);\n"
+"border-bottom-color:rgb(40, 44, 52);")
         self.label_17.setAlignment(QtCore.Qt.AlignCenter)
         self.label_17.setObjectName("label_17")
         self.horizontalLayout_30.addWidget(self.label_17)
-        self.label_16 = QtWidgets.QLabel(self.frame_results)
+        self.label_16 = QtWidgets.QLabel(self.frame_dashboard)
+        self.label_16.setStyleSheet("border-color: rgb(0, 0, 0);\n"
+"border: 2px solid;\n"
+"border-left-color:rgb(40, 44, 52);\n"
+"border-bottom-color:rgb(40, 44, 52);")
         self.label_16.setText("")
         self.label_16.setPixmap(QtGui.QPixmap(":/20x20/icons/20x20/cil-https.png"))
         self.label_16.setAlignment(QtCore.Qt.AlignCenter)
@@ -936,32 +1166,43 @@ class Ui_Admin_dashboard(object):
         self.horizontalLayout_33 = QtWidgets.QHBoxLayout()
         self.horizontalLayout_33.setSpacing(0)
         self.horizontalLayout_33.setObjectName("horizontalLayout_33")
-        self.label_11 = QtWidgets.QLabel(self.frame_results)
+        self.label_11 = QtWidgets.QLabel(self.frame_dashboard)
         font = QtGui.QFont()
         font.setPointSize(14)
         font.setBold(True)
         self.label_11.setFont(font)
+        self.label_11.setStyleSheet("border-color: rgb(0, 0, 0);\n"
+"border: 2px solid;\n"
+"border-top-color:rgb(40, 44, 52);")
         self.label_11.setAlignment(QtCore.Qt.AlignCenter)
         self.label_11.setObjectName("label_11")
         self.horizontalLayout_33.addWidget(self.label_11)
         self.verticalLayout_17.addLayout(self.horizontalLayout_33)
         self.horizontalLayout_11.addLayout(self.verticalLayout_17)
         self.verticalLayout_18 = QtWidgets.QVBoxLayout()
-        self.verticalLayout_18.setContentsMargins(5, 5, 5, 5)
-        self.verticalLayout_18.setSpacing(5)
+        self.verticalLayout_18.setContentsMargins(0, 0, 0, 0)
+        self.verticalLayout_18.setSpacing(0)
         self.verticalLayout_18.setObjectName("verticalLayout_18")
         self.horizontalLayout_31 = QtWidgets.QHBoxLayout()
         self.horizontalLayout_31.setSpacing(0)
         self.horizontalLayout_31.setObjectName("horizontalLayout_31")
-        self.label_19 = QtWidgets.QLabel(self.frame_results)
+        self.label_19 = QtWidgets.QLabel(self.frame_dashboard)
         font = QtGui.QFont()
         font.setPointSize(16)
         font.setBold(True)
         self.label_19.setFont(font)
+        self.label_19.setStyleSheet("border-color: rgb(0, 0, 0);\n"
+"border: 2px solid;\n"
+"border-right-color:rgb(40, 44, 52);\n"
+"border-bottom-color:rgb(40, 44, 52);")
         self.label_19.setAlignment(QtCore.Qt.AlignCenter)
         self.label_19.setObjectName("label_19")
         self.horizontalLayout_31.addWidget(self.label_19)
-        self.label_18 = QtWidgets.QLabel(self.frame_results)
+        self.label_18 = QtWidgets.QLabel(self.frame_dashboard)
+        self.label_18.setStyleSheet("border-color: rgb(0, 0, 0);\n"
+"border: 2px solid;\n"
+"border-left-color:rgb(40, 44, 52);\n"
+"border-bottom-color:rgb(40, 44, 52);")
         self.label_18.setText("")
         self.label_18.setPixmap(QtGui.QPixmap(":/20x20/icons/20x20/cil-check-circle.png"))
         self.label_18.setAlignment(QtCore.Qt.AlignCenter)
@@ -971,11 +1212,14 @@ class Ui_Admin_dashboard(object):
         self.horizontalLayout_34 = QtWidgets.QHBoxLayout()
         self.horizontalLayout_34.setSpacing(0)
         self.horizontalLayout_34.setObjectName("horizontalLayout_34")
-        self.label_12 = QtWidgets.QLabel(self.frame_results)
+        self.label_12 = QtWidgets.QLabel(self.frame_dashboard)
         font = QtGui.QFont()
         font.setPointSize(14)
         font.setBold(True)
         self.label_12.setFont(font)
+        self.label_12.setStyleSheet("border-color: rgb(0, 0, 0);\n"
+"border: 2px solid;\n"
+"border-top-color:rgb(40, 44, 52);")
         self.label_12.setAlignment(QtCore.Qt.AlignCenter)
         self.label_12.setObjectName("label_12")
         self.horizontalLayout_34.addWidget(self.label_12)
@@ -984,8 +1228,16 @@ class Ui_Admin_dashboard(object):
         self.verticalLayout_16 = QtWidgets.QVBoxLayout()
         self.verticalLayout_16.setSpacing(0)
         self.verticalLayout_16.setObjectName("verticalLayout_16")
+        self.horizontalLayout_32 = QtWidgets.QHBoxLayout()
+        self.horizontalLayout_32.setObjectName("horizontalLayout_32")
+        self.verticalLayout_16.addLayout(self.horizontalLayout_32)
         self.horizontalLayout_11.addLayout(self.verticalLayout_16)
         self.verticalLayout_6.addLayout(self.horizontalLayout_11)
+        self.frame_dashboard.raise_()
+        self.frame_subjects.raise_()
+        self.frame_students.raise_()
+        self.frame_examinations.raise_()
+        self.frame_results.raise_()
         self.verticalLayout_4.addWidget(self.frame_content)
         self.frame_grip = QtWidgets.QFrame(self.frame_content_right)
         self.frame_grip.setMinimumSize(QtCore.QSize(0, 25))
@@ -1028,15 +1280,561 @@ class Ui_Admin_dashboard(object):
         self.horizontalLayout_2.addWidget(self.frame_content_right)
         self.verticalLayout.addWidget(self.frame_center)
         self.horizontalLayout.addWidget(self.frame_main)
-        self.frame_dashboard.hide()
+
         self.frame_examinations.hide()
-        # self.frame_results.hide()
+        self.frame_results.hide()
         self.frame_students.hide()
         self.frame_subjects.hide()
+
+        try:
+                mydb = connection.MySQLConnection(
+                        database = 'online_examination_system',
+                        host = '127.0.0.1',
+                        user = 'root',
+                        password = 'HSbF6@123$'
+                )
+        except mysql.connector.Error as err:
+                print(err)
+        access_data_dashboard = ('SELECT students_class, active_exams, subjects, passed_exams, failed_exams, locked_exams, attended_exams from student_dashboard_table')
+        cursor = mydb.cursor()
+        cursor.execute(access_data_dashboard)
+        # x = cursor.fetchall()
+        # print(x[0])
+        # print(x[0][0])
+        # self.label_2.setText("5")
+        for x in cursor.fetchall():
+                self.label_2.setText(str(x[0]))
+                self.label_4.setText(str(x[1]))
+                self.label_8.setText(str(x[2]))
+
+        self.btn_dashboard.clicked.connect(self.on_btn_dashboard_clicked)
+        self.btn_exams.clicked.connect(self.on_btn_exams_clicked)
+        self.btn_results.clicked.connect(self.on_btn_results_clicked)
+        self.btn_students.clicked.connect(self.on_btn_students_clicked)
+        self.btn_subjects.clicked.connect(self.on_btn_subjects_clicked)
+
         Admin_dashboard.setCentralWidget(self.centralwidget)
 
         self.retranslateUi(Admin_dashboard)
         QtCore.QMetaObject.connectSlotsByName(Admin_dashboard)
+
+    def on_btn_dashboard_clicked(self):
+        self.btn_dashboard.setStyleSheet("QPushButton {    \n"
+"    background-image: url(:/16x16/icons/16x16/cil-home.png);\n"
+"    background-position: left center;\n"
+"    background-repeat: no-repeat;\n"
+"    border: none;\n"
+"    border-left: 28px solid rgb(27, 29, 35);\n"
+"    border-right: 5px solid rgb(44, 49, 60);\n"
+"    background-color: rgb(27, 29, 35);\n"
+"    text-align: left;\n"
+"    padding-left: 45px;\n"
+"}\n"
+"QPushButton:hover {\n"
+"    background-color: rgb(33, 37, 43);\n"
+"    border-left: 28px solid rgb(33, 37, 43);\n"
+"}\n"
+"QPushButton:pressed {    \n"
+"    background-color: rgb(85, 170, 255);\n"
+"    border-left: 28px solid rgb(85, 170, 255);\n"
+"}")
+        self.btn_exams.setStyleSheet("QPushButton {    \n"
+"    background-image: url(:/16x16/icons/16x16/cil-cloud-upload.png);\n"
+"    background-position: left center;\n"
+"    background-repeat: no-repeat;\n"
+"    border: none;\n"
+"    border-left: 28px solid rgb(27, 29, 35);\n"
+"    background-color: rgb(27, 29, 35);\n"
+"    text-align: left;\n"
+"    padding-left: 45px;\n"
+"}\n"
+"QPushButton:hover {\n"
+"    background-color: rgb(33, 37, 43);\n"
+"    border-left: 28px solid rgb(33, 37, 43);\n"
+"}\n"
+"QPushButton:pressed {    \n"
+"    background-color: rgb(85, 170, 255);\n"
+"    border-left: 28px solid rgb(85, 170, 255);\n"
+"}")
+        self.btn_results.setStyleSheet("QPushButton {    \n"
+"    background-image: url(:/16x16/icons/16x16/cil-justify-left.png);\n"
+"    background-position: left center;\n"
+"    background-repeat: no-repeat;\n"
+"    border: none;\n"
+"    border-left: 28px solid rgb(27, 29, 35);\n"
+"    background-color: rgb(27, 29, 35);\n"
+"    text-align: left;\n"
+"    padding-left: 45px;\n"
+"}\n"
+"QPushButton:hover {\n"
+"    background-color: rgb(33, 37, 43);\n"
+"    border-left: 28px solid rgb(33, 37, 43);\n"
+"}\n"
+"QPushButton:pressed {    \n"
+"    background-color: rgb(85, 170, 255);\n"
+"    border-left: 28px solid rgb(85, 170, 255);\n"
+"}")
+        self.btn_subjects.setStyleSheet("QPushButton {    \n"
+"    background-image: url(:/16x16/icons/16x16/cil-description.png);\n"
+"    background-position: left center;\n"
+"    background-repeat: no-repeat;\n"
+"    border: none;\n"
+"    border-left: 28px solid rgb(27, 29, 35);\n"
+"    background-color: rgb(27, 29, 35);\n"
+"    text-align: left;\n"
+"    padding-left: 45px;\n"
+"}\n"
+"QPushButton:hover {\n"
+"    background-color: rgb(33, 37, 43);\n"
+"    border-left: 28px solid rgb(33, 37, 43);\n"
+"}\n"
+"QPushButton:pressed {    \n"
+"    background-color: rgb(85, 170, 255);\n"
+"    border-left: 28px solid rgb(85, 170, 255);\n"
+"}")
+        self.btn_students.setStyleSheet("QPushButton {    \n"
+"    background-image: url(:/16x16/icons/16x16/cil-people.png);\n"
+"    background-position: left center;\n"
+"    background-repeat: no-repeat;\n"
+"    border: none;\n"
+"    border-left: 28px solid rgb(27, 29, 35);\n"
+"    background-color: rgb(27, 29, 35);\n"
+"    text-align: left;\n"
+"    padding-left: 45px;\n"
+"}\n"
+"QPushButton:hover {\n"
+"    background-color: rgb(33, 37, 43);\n"
+"    border-left: 28px solid rgb(33, 37, 43);\n"
+"}\n"
+"QPushButton:pressed {    \n"
+"    background-color: rgb(85, 170, 255);\n"
+"    border-left: 28px solid rgb(85, 170, 255);\n"
+"}")
+        self.frame_dashboard.show()
+        self.frame_examinations.hide()
+        self.frame_results.hide()
+        self.frame_students.hide()
+        self.frame_subjects.hide()
+
+    def on_btn_exams_clicked(self):
+        self.btn_exams.setStyleSheet("QPushButton {    \n"
+"    background-image: url(:/16x16/icons/16x16/cil-cloud-upload.png);\n"
+"    background-position: left center;\n"
+"    background-repeat: no-repeat;\n"
+"    border: none;\n"
+"    border-left: 28px solid rgb(27, 29, 35);\n"
+"    border-right: 5px solid rgb(44, 49, 60);\n"
+"    background-color: rgb(27, 29, 35);\n"
+"    text-align: left;\n"
+"    padding-left: 45px;\n"
+"}\n"
+"QPushButton:hover {\n"
+"    background-color: rgb(33, 37, 43);\n"
+"    border-left: 28px solid rgb(33, 37, 43);\n"
+"}\n"
+"QPushButton:pressed {    \n"
+"    background-color: rgb(85, 170, 255);\n"
+"    border-left: 28px solid rgb(85, 170, 255);\n"
+"}")
+        self.btn_dashboard.setStyleSheet("QPushButton {    \n"
+"    background-image: url(:/16x16/icons/16x16/cil-home.png);\n"
+"    background-position: left center;\n"
+"    background-repeat: no-repeat;\n"
+"    border: none;\n"
+"    border-left: 28px solid rgb(27, 29, 35);\n"
+"    background-color: rgb(27, 29, 35);\n"
+"    text-align: left;\n"
+"    padding-left: 45px;\n"
+"}\n"
+"QPushButton:hover {\n"
+"    background-color: rgb(33, 37, 43);\n"
+"    border-left: 28px solid rgb(33, 37, 43);\n"
+"}\n"
+"QPushButton:pressed {    \n"
+"    background-color: rgb(85, 170, 255);\n"
+"    border-left: 28px solid rgb(85, 170, 255);\n"
+"}")
+        self.btn_results.setStyleSheet("QPushButton {    \n"
+"    background-image: url(:/16x16/icons/16x16/cil-justify-left.png);\n"
+"    background-position: left center;\n"
+"    background-repeat: no-repeat;\n"
+"    border: none;\n"
+"    border-left: 28px solid rgb(27, 29, 35);\n"
+"    background-color: rgb(27, 29, 35);\n"
+"    text-align: left;\n"
+"    padding-left: 45px;\n"
+"}\n"
+"QPushButton:hover {\n"
+"    background-color: rgb(33, 37, 43);\n"
+"    border-left: 28px solid rgb(33, 37, 43);\n"
+"}\n"
+"QPushButton:pressed {    \n"
+"    background-color: rgb(85, 170, 255);\n"
+"    border-left: 28px solid rgb(85, 170, 255);\n"
+"}")
+        self.btn_subjects.setStyleSheet("QPushButton {    \n"
+"    background-image: url(:/16x16/icons/16x16/cil-description.png);\n"
+"    background-position: left center;\n"
+"    background-repeat: no-repeat;\n"
+"    border: none;\n"
+"    border-left: 28px solid rgb(27, 29, 35);\n"
+"    background-color: rgb(27, 29, 35);\n"
+"    text-align: left;\n"
+"    padding-left: 45px;\n"
+"}\n"
+"QPushButton:hover {\n"
+"    background-color: rgb(33, 37, 43);\n"
+"    border-left: 28px solid rgb(33, 37, 43);\n"
+"}\n"
+"QPushButton:pressed {    \n"
+"    background-color: rgb(85, 170, 255);\n"
+"    border-left: 28px solid rgb(85, 170, 255);\n"
+"}")
+        self.btn_students.setStyleSheet("QPushButton {    \n"
+"    background-image: url(:/16x16/icons/16x16/cil-people.png);\n"
+"    background-position: left center;\n"
+"    background-repeat: no-repeat;\n"
+"    border: none;\n"
+"    border-left: 28px solid rgb(27, 29, 35);\n"
+"    background-color: rgb(27, 29, 35);\n"
+"    text-align: left;\n"
+"    padding-left: 45px;\n"
+"}\n"
+"QPushButton:hover {\n"
+"    background-color: rgb(33, 37, 43);\n"
+"    border-left: 28px solid rgb(33, 37, 43);\n"
+"}\n"
+"QPushButton:pressed {    \n"
+"    background-color: rgb(85, 170, 255);\n"
+"    border-left: 28px solid rgb(85, 170, 255);\n"
+"}")
+        self.frame_examinations.show()
+        self.frame_dashboard.hide()
+        self.frame_results.hide()
+        self.frame_students.hide()
+        self.frame_subjects.hide()
+
+        
+    def on_btn_results_clicked(self):
+        self.btn_results.setStyleSheet("QPushButton {    \n"
+"    background-image: url(:/16x16/icons/16x16/cil-justify-left.png);\n"
+"    background-position: left center;\n"
+"    background-repeat: no-repeat;\n"
+"    border: none;\n"
+"    border-left: 28px solid rgb(27, 29, 35);\n"
+"    border-right: 5px solid rgb(44, 49, 60);\n"
+"    background-color: rgb(27, 29, 35);\n"
+"    text-align: left;\n"
+"    padding-left: 45px;\n"
+"}\n"
+"QPushButton:hover {\n"
+"    background-color: rgb(33, 37, 43);\n"
+"    border-left: 28px solid rgb(33, 37, 43);\n"
+"}\n"
+"QPushButton:pressed {    \n"
+"    background-color: rgb(85, 170, 255);\n"
+"    border-left: 28px solid rgb(85, 170, 255);\n"
+"}")
+        self.btn_exams.setStyleSheet("QPushButton {    \n"
+"    background-image: url(:/16x16/icons/16x16/cil-cloud-upload.png);\n"
+"    background-position: left center;\n"
+"    background-repeat: no-repeat;\n"
+"    border: none;\n"
+"    border-left: 28px solid rgb(27, 29, 35);\n"
+"    background-color: rgb(27, 29, 35);\n"
+"    text-align: left;\n"
+"    padding-left: 45px;\n"
+"}\n"
+"QPushButton:hover {\n"
+"    background-color: rgb(33, 37, 43);\n"
+"    border-left: 28px solid rgb(33, 37, 43);\n"
+"}\n"
+"QPushButton:pressed {    \n"
+"    background-color: rgb(85, 170, 255);\n"
+"    border-left: 28px solid rgb(85, 170, 255);\n"
+"}")
+        self.btn_dashboard.setStyleSheet("QPushButton {    \n"
+"    background-image: url(:/16x16/icons/16x16/cil-home.png);\n"
+"    background-position: left center;\n"
+"    background-repeat: no-repeat;\n"
+"    border: none;\n"
+"    border-left: 28px solid rgb(27, 29, 35);\n"
+"    background-color: rgb(27, 29, 35);\n"
+"    text-align: left;\n"
+"    padding-left: 45px;\n"
+"}\n"
+"QPushButton:hover {\n"
+"    background-color: rgb(33, 37, 43);\n"
+"    border-left: 28px solid rgb(33, 37, 43);\n"
+"}\n"
+"QPushButton:pressed {    \n"
+"    background-color: rgb(85, 170, 255);\n"
+"    border-left: 28px solid rgb(85, 170, 255);\n"
+"}")
+
+        self.btn_subjects.setStyleSheet("QPushButton {    \n"
+"    background-image: url(:/16x16/icons/16x16/cil-description.png);\n"
+"    background-position: left center;\n"
+"    background-repeat: no-repeat;\n"
+"    border: none;\n"
+"    border-left: 28px solid rgb(27, 29, 35);\n"
+"    background-color: rgb(27, 29, 35);\n"
+"    text-align: left;\n"
+"    padding-left: 45px;\n"
+"}\n"
+"QPushButton:hover {\n"
+"    background-color: rgb(33, 37, 43);\n"
+"    border-left: 28px solid rgb(33, 37, 43);\n"
+"}\n"
+"QPushButton:pressed {    \n"
+"    background-color: rgb(85, 170, 255);\n"
+"    border-left: 28px solid rgb(85, 170, 255);\n"
+"}")
+        self.btn_students.setStyleSheet("QPushButton {    \n"
+"    background-image: url(:/16x16/icons/16x16/cil-people.png);\n"
+"    background-position: left center;\n"
+"    background-repeat: no-repeat;\n"
+"    border: none;\n"
+"    border-left: 28px solid rgb(27, 29, 35);\n"
+"    background-color: rgb(27, 29, 35);\n"
+"    text-align: left;\n"
+"    padding-left: 45px;\n"
+"}\n"
+"QPushButton:hover {\n"
+"    background-color: rgb(33, 37, 43);\n"
+"    border-left: 28px solid rgb(33, 37, 43);\n"
+"}\n"
+"QPushButton:pressed {    \n"
+"    background-color: rgb(85, 170, 255);\n"
+"    border-left: 28px solid rgb(85, 170, 255);\n"
+"}")
+        try:
+                mydb = connection.MySQLConnection(
+                database = 'online_examination_system',
+                host = '127.0.0.1',
+                user = 'root',
+                password = 'HSbF6@123$'
+            )
+        except mysql.connector.Error as err:
+                print(err)
+        access_marks = ('SELECT exam_name, score, correct_questions, wrong_questions, max_marks from marks_table')
+        cursor = mydb.cursor()
+        cursor.execute(access_marks)
+        x = cursor.fetchall()
+        # print(x)
+        if len(x) == 0:
+                self.label_42.setText("Data is unavailable!!!")
+        else:
+                self.label_31.setText(str(x[0][0]))
+                self.label_32.setText(str(x[0][1]))
+                self.label_34.setText(str(x[0][2]))
+                self.label_33.setText(str(x[0][3]))
+                self.label_29.setText(str(x[0][4]))
+
+        self.frame_results.show()
+        self.frame_examinations.hide()
+        self.frame_dashboard.hide()
+        self.frame_students.hide()
+        self.frame_subjects.hide()
+
+    def on_btn_students_clicked(self):
+        self.btn_results.setStyleSheet("QPushButton {    \n"
+"    background-image: url(:/16x16/icons/16x16/cil-justify-left.png);\n"
+"    background-position: left center;\n"
+"    background-repeat: no-repeat;\n"
+"    border: none;\n"
+"    border-left: 28px solid rgb(27, 29, 35);\n"
+"    background-color: rgb(27, 29, 35);\n"
+"    text-align: left;\n"
+"    padding-left: 45px;\n"
+"}\n"
+"QPushButton:hover {\n"
+"    background-color: rgb(33, 37, 43);\n"
+"    border-left: 28px solid rgb(33, 37, 43);\n"
+"}\n"
+"QPushButton:pressed {    \n"
+"    background-color: rgb(85, 170, 255);\n"
+"    border-left: 28px solid rgb(85, 170, 255);\n"
+"}")
+        self.btn_exams.setStyleSheet("QPushButton {    \n"
+"    background-image: url(:/16x16/icons/16x16/cil-cloud-upload.png);\n"
+"    background-position: left center;\n"
+"    background-repeat: no-repeat;\n"
+"    border: none;\n"
+"    border-left: 28px solid rgb(27, 29, 35);\n"
+"    background-color: rgb(27, 29, 35);\n"
+"    text-align: left;\n"
+"    padding-left: 45px;\n"
+"}\n"
+"QPushButton:hover {\n"
+"    background-color: rgb(33, 37, 43);\n"
+"    border-left: 28px solid rgb(33, 37, 43);\n"
+"}\n"
+"QPushButton:pressed {    \n"
+"    background-color: rgb(85, 170, 255);\n"
+"    border-left: 28px solid rgb(85, 170, 255);\n"
+"}")
+        self.btn_dashboard.setStyleSheet("QPushButton {    \n"
+"    background-image: url(:/16x16/icons/16x16/cil-home.png);\n"
+"    background-position: left center;\n"
+"    background-repeat: no-repeat;\n"
+"    border: none;\n"
+"    border-left: 28px solid rgb(27, 29, 35);\n"
+"    background-color: rgb(27, 29, 35);\n"
+"    text-align: left;\n"
+"    padding-left: 45px;\n"
+"}\n"
+"QPushButton:hover {\n"
+"    background-color: rgb(33, 37, 43);\n"
+"    border-left: 28px solid rgb(33, 37, 43);\n"
+"}\n"
+"QPushButton:pressed {    \n"
+"    background-color: rgb(85, 170, 255);\n"
+"    border-left: 28px solid rgb(85, 170, 255);\n"
+"}")
+
+        self.btn_subjects.setStyleSheet("QPushButton {    \n"
+"    background-image: url(:/16x16/icons/16x16/cil-description.png);\n"
+"    background-position: left center;\n"
+"    background-repeat: no-repeat;\n"
+"    border: none;\n"
+"    border-left: 28px solid rgb(27, 29, 35);\n"
+"    background-color: rgb(27, 29, 35);\n"
+"    text-align: left;\n"
+"    padding-left: 45px;\n"
+"}\n"
+"QPushButton:hover {\n"
+"    background-color: rgb(33, 37, 43);\n"
+"    border-left: 28px solid rgb(33, 37, 43);\n"
+"}\n"
+"QPushButton:pressed {    \n"
+"    background-color: rgb(85, 170, 255);\n"
+"    border-left: 28px solid rgb(85, 170, 255);\n"
+"}")
+        self.btn_students.setStyleSheet("QPushButton {    \n"
+"    background-image: url(:/16x16/icons/16x16/cil-people.png);\n"
+"    background-position: left center;\n"
+"    background-repeat: no-repeat;\n"
+"    border: none;\n"
+"    border-left: 28px solid rgb(27, 29, 35);\n"
+"    border-right: 5px solid rgb(44, 49, 60);\n"
+"    background-color: rgb(27, 29, 35);\n"
+"    text-align: left;\n"
+"    padding-left: 45px;\n"
+"}\n"
+"QPushButton:hover {\n"
+"    background-color: rgb(33, 37, 43);\n"
+"    border-left: 28px solid rgb(33, 37, 43);\n"
+"}\n"
+"QPushButton:pressed {    \n"
+"    background-color: rgb(85, 170, 255);\n"
+"    border-left: 28px solid rgb(85, 170, 255);\n"
+"}")
+        self.frame_students.show()
+        self.frame_examinations.hide()
+        self.frame_dashboard.hide()
+        self.frame_results.hide()
+        self.frame_subjects.hide()
+
+    def on_btn_subjects_clicked(self):
+        self.btn_results.setStyleSheet("QPushButton {    \n"
+"    background-image: url(:/16x16/icons/16x16/cil-justify-left.png);\n"
+"    background-position: left center;\n"
+"    background-repeat: no-repeat;\n"
+"    border: none;\n"
+"    border-left: 28px solid rgb(27, 29, 35);\n"
+"    background-color: rgb(27, 29, 35);\n"
+"    text-align: left;\n"
+"    padding-left: 45px;\n"
+"}\n"
+"QPushButton:hover {\n"
+"    background-color: rgb(33, 37, 43);\n"
+"    border-left: 28px solid rgb(33, 37, 43);\n"
+"}\n"
+"QPushButton:pressed {    \n"
+"    background-color: rgb(85, 170, 255);\n"
+"    border-left: 28px solid rgb(85, 170, 255);\n"
+"}")
+        self.btn_exams.setStyleSheet("QPushButton {    \n"
+"    background-image: url(:/16x16/icons/16x16/cil-cloud-upload.png);\n"
+"    background-position: left center;\n"
+"    background-repeat: no-repeat;\n"
+"    border: none;\n"
+"    border-left: 28px solid rgb(27, 29, 35);\n"
+"    background-color: rgb(27, 29, 35);\n"
+"    text-align: left;\n"
+"    padding-left: 45px;\n"
+"}\n"
+"QPushButton:hover {\n"
+"    background-color: rgb(33, 37, 43);\n"
+"    border-left: 28px solid rgb(33, 37, 43);\n"
+"}\n"
+"QPushButton:pressed {    \n"
+"    background-color: rgb(85, 170, 255);\n"
+"    border-left: 28px solid rgb(85, 170, 255);\n"
+"}")
+        self.btn_dashboard.setStyleSheet("QPushButton {    \n"
+"    background-image: url(:/16x16/icons/16x16/cil-home.png);\n"
+"    background-position: left center;\n"
+"    background-repeat: no-repeat;\n"
+"    border: none;\n"
+"    border-left: 28px solid rgb(27, 29, 35);\n"
+"    background-color: rgb(27, 29, 35);\n"
+"    text-align: left;\n"
+"    padding-left: 45px;\n"
+"}\n"
+"QPushButton:hover {\n"
+"    background-color: rgb(33, 37, 43);\n"
+"    border-left: 28px solid rgb(33, 37, 43);\n"
+"}\n"
+"QPushButton:pressed {    \n"
+"    background-color: rgb(85, 170, 255);\n"
+"    border-left: 28px solid rgb(85, 170, 255);\n"
+"}")
+
+        self.btn_subjects.setStyleSheet("QPushButton {    \n"
+"    background-image: url(:/16x16/icons/16x16/cil-description.png);\n"
+"    background-position: left center;\n"
+"    background-repeat: no-repeat;\n"
+"    border: none;\n"
+"    border-left: 28px solid rgb(27, 29, 35);\n"
+"    border-right: 5px solid rgb(44, 49, 60);\n"
+"    background-color: rgb(27, 29, 35);\n"
+"    text-align: left;\n"
+"    padding-left: 45px;\n"
+"}\n"
+"QPushButton:hover {\n"
+"    background-color: rgb(33, 37, 43);\n"
+"    border-left: 28px solid rgb(33, 37, 43);\n"
+"}\n"
+"QPushButton:pressed {    \n"
+"    background-color: rgb(85, 170, 255);\n"
+"    border-left: 28px solid rgb(85, 170, 255);\n"
+"}")
+        self.btn_students.setStyleSheet("QPushButton {    \n"
+"    background-image: url(:/16x16/icons/16x16/cil-people.png);\n"
+"    background-position: left center;\n"
+"    background-repeat: no-repeat;\n"
+"    border: none;\n"
+"    border-left: 28px solid rgb(27, 29, 35);\n"
+"    background-color: rgb(27, 29, 35);\n"
+"    text-align: left;\n"
+"    padding-left: 45px;\n"
+"}\n"
+"QPushButton:hover {\n"
+"    background-color: rgb(33, 37, 43);\n"
+"    border-left: 28px solid rgb(33, 37, 43);\n"
+"}\n"
+"QPushButton:pressed {    \n"
+"    background-color: rgb(85, 170, 255);\n"
+"    border-left: 28px solid rgb(85, 170, 255);\n"
+"}")
+        self.frame_subjects.show()
+        self.frame_examinations.hide()
+        self.frame_dashboard.hide()
+        self.frame_students.hide()
+        self.frame_results.hide()
+
 
     def retranslateUi(self, Admin_dashboard):
         _translate = QtCore.QCoreApplication.translate
@@ -1046,13 +1844,28 @@ class Ui_Admin_dashboard(object):
         self.btn_close.setToolTip(_translate("Admin_dashboard", "Close"))
         self.label_top_info_2.setText(_translate("Admin_dashboard", "| HOME"))
         self.btn_dashboard.setText(_translate("Admin_dashboard", "Dashboard"))
-        self.btn_departments.setText(_translate("Admin_dashboard", "results"))
         self.btn_subjects.setText(_translate("Admin_dashboard", "Subjects"))
-        self.btn_students_list.setText(_translate("Admin_dashboard", "Students"))
+        self.btn_students.setText(_translate("Admin_dashboard", "Students"))
         self.btn_exams.setText(_translate("Admin_dashboard", "Examinations"))
-        self.btn_notices.setText(_translate("Admin_dashboard", "Notices"))
+        self.btn_results.setText(_translate("Admin_dashboard", "Notices"))
         self.label_user_icon.setText(_translate("Admin_dashboard", "AM"))
         self.btn_settings.setText(_translate("Admin_dashboard", "Open File"))
+        self.label_45.setText(_translate("Admin_dashboard", "My Examinations"))
+        self.pushButton.setText(_translate("Admin_dashboard", "Take Assessment"))
+        self.label_13.setText(_translate("Admin_dashboard", "Assessment Results"))
+        self.label_21.setText(_translate("Admin_dashboard", "Results Information"))
+        self.label_20.setText(_translate("Admin_dashboard", "Exam Name"))
+        self.label_26.setText(_translate("Admin_dashboard", "Score"))
+        self.label_28.setText(_translate("Admin_dashboard", "Correct Questions"))
+        self.label_25.setText(_translate("Admin_dashboard", "Wrong Questions"))
+        self.label_27.setText(_translate("Admin_dashboard", "Max. Marks"))
+        self.label_31.setText(_translate("Admin_dashboard", "0"))
+        self.label_32.setText(_translate("Admin_dashboard", "0"))
+        self.label_34.setText(_translate("Admin_dashboard", "0"))
+        self.label_33.setText(_translate("Admin_dashboard", "0"))
+        self.label_29.setText(_translate("Admin_dashboard", "0"))
+        self.label_44.setText(_translate("Admin_dashboard", "Status"))
+        self.label_42.setText(_translate("Admin_dashboard", "TextLabel"))
         self.label_2.setText(_translate("Admin_dashboard", "0"))
         self.label_3.setText(_translate("Admin_dashboard", "Students in my class"))
         self.label_4.setText(_translate("Admin_dashboard", "0"))
